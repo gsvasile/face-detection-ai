@@ -1,2 +1,23 @@
 {
+    "editor.fontFamily": "Inconsolata, Consolas, monospace",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "files.trimTrailingWhitespace": true,
+    "editor.renderWhitespace": "all",
+    "prettier": {
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true,
+        "embeddedLanguageFormatting": "off",
+        "proseWrap": "never",
+        "htmlWhitespaceSensitivity": "ignore",
+        "jsxBracketSameLine": false,
+        "overrides": [
+            {
+                "files": "*.js",
+                "options": {
+                    "parser": "flow"
+                }
+            }
+        ]
+    }
 }

@@ -1,7 +1,66 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default ({ onRouteChange, signIn }) => {
+export default ({ onRouteChange, signIn, loadUser }) => {
+
+    const [signInEmail, setSignInEmail] = React.useState('');
+    const [signInPassword, setSignInPassword] = React.useState('');
+    const [name, setName] = React.useState('');
+
+
+    const signInAPICall = () => {
+        fetch('http://localhost:3001/signin', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: signInEmail,
+                password: signInPassword
+            })
+        })
+            .then(response => response.json())
+            .then(user => {
+                if (user.id) {
+                    loadUser(user);
+                    onRouteChange('home');
+                }
+            });
+    }
+
+    const registerAPICall = () => {
+        fetch('http://localhost:3001/register', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: signInEmail,
+                password: signInPassword,
+                name: name
+            })
+        })
+            .then(response => response.json())
+            .then(user => {
+                if (user) {
+                    loadUser(user);
+                    onRouteChange('home');
+                }
+            });
+    }
+
+    const onEmailchange = (event) => {
+        setSignInEmail(event.target.value);
+    }
+
+    const onPasswordChange = (event) => {
+        setSignInPassword(event.target.value);
+    }
+
+    const onNameChange = (event) => {
+        setName(event.target.value);
+    }
+
+    const onSubmitSignIn = () => {
+        signIn ? signInAPICall() : registerAPICall();
+    };
+
     return (
         <FormContainer>
             <FormWrapper>
@@ -11,26 +70,41 @@ export default ({ onRouteChange, signIn }) => {
                         {!signIn
                             ?
                             <TopInputContainer>
-                                <FieldInputLabel for='name'>{'Name'}</FieldInputLabel>
-                                <FieldInput type='text' name='name' id='name' />
+                                <FieldInputLabel htmlFor='name'>{'Name'}</FieldInputLabel>
+                                <FieldInput
+                                    onChange={onNameChange}
+                                    type='text'
+                                    name='name'
+                                    id='name'
+                                />
                             </TopInputContainer>
                             :
                             <span />
                         }
                         <TopInputContainer>
-                            <FieldInputLabel for='email-address'>{'Email'}</FieldInputLabel>
-                            <FieldInput type='email' name='email-address' id='email-address' />
+                            <FieldInputLabel htmlFor='email-address'>{'Email'}</FieldInputLabel>
+                            <FieldInput
+                                onChange={onEmailchange}
+                                type='email'
+                                name='email-address'
+                                id='email-address'
+                            />
                         </TopInputContainer>
                         <PasswordInputContainer>
-                            <FieldInputLabel for='password'>{'Password'}</FieldInputLabel>
-                            <FieldInput type='password' name='password' id='password' />
+                            <FieldInputLabel htmlFor='password'>{'Password'}</FieldInputLabel>
+                            <FieldInput
+                                onChange={onPasswordChange}
+                                type='password'
+                                name='password'
+                                id='password'
+                            />
                         </PasswordInputContainer>
                     </FieldSet>
                     <SubmitInputContainer>
                         <SubmitInput
                             type='submit'
                             value={signIn ? 'Sign in' : 'Register'}
-                            onClick={() => onRouteChange('home')}
+                            onClick={onSubmitSignIn}
                         />
                     </SubmitInputContainer>
                     {signIn

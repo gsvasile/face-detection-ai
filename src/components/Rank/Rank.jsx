@@ -1,14 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default () => {
-    return (
-        <Rank>
-            <UserGreet>{'G-FUNK!!!!!! You rank be...'}</UserGreet>
-            <RankNumber>{'#5'}</RankNumber>
-        </Rank>
-    );
-};
+export default ({ userName, userEntries }) =>
+    <Rank>
+        <UserGreet>{`${userName}!!!!!! Your rank is...`}</UserGreet>
+        <RankNumber>{`#${userEntries}`}</RankNumber>
+    </Rank>;
 
 const Rank = styled.div.attrs({
     className: '',
