@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export default ({ userName, userEntries }) =>
     <Rank>
-        <UserGreet>{`${userName}!!!!!! Your rank is...`}</UserGreet>
+        <UserGreet>{`${userName}!!!!!! Your current entry count is...`}</UserGreet>
         <RankNumber>{`#${userEntries}`}</RankNumber>
     </Rank>;
 

@@ -11,7 +11,7 @@ import Form from './components/Form/Form';
 import './App.css';
 
 const app = new Clarifai.App({
-    apiKey: 'YOUR_API_HERE',
+    apiKey: 'YOUR_API_KEY',
 });
 
 const particlesOptions = {
@@ -86,7 +86,24 @@ export default () => {
                 Clarifai.FACE_DETECT_MODEL,
                 [input]
             )
-            .then(response => displayFaceBox(calculateFaceLoctaion(response)))
+            .then(response => {
+                if (response) {
+                    fetch('http://localhost:3001/image', {
+                        method: 'put',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            id: user.id,
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(count => {
+                            setUser({
+                                entries: count
+                            });
+                        });
+                }
+                displayFaceBox(calculateFaceLoctaion(response))
+            })
             .catch(err => console.log(err))
     };
 
