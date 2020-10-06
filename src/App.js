@@ -97,9 +97,8 @@ export default () => {
                     })
                         .then(response => response.json())
                         .then(count => {
-                            setUser({
-                                entries: count
-                            });
+                            setUser(Object.assign(user, { entries: count }));
+                            loadUser(user);
                         });
                 }
                 displayFaceBox(calculateFaceLoctaion(response))
