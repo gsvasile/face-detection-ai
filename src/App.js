@@ -88,7 +88,7 @@ export default () => {
     const onInputChange = (event) => setInput(event.target.value);
     const onButtonSubmit = () => {
         setImageUrl(input);
-        fetch('http://localhost:3001/imageurl', {
+        fetch('https://gentle-mesa-91050.herokuapp.com/imageurl', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -98,7 +98,7 @@ export default () => {
             .then(response => response.json())
             .then(response => {
                 if (response) {
-                    fetch('http://localhost:3001/image', {
+                    fetch('https://gentle-mesa-91050.herokuapp.com/image', {
                         method: 'put',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

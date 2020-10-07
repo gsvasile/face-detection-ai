@@ -9,7 +9,7 @@ export default ({ onRouteChange, signIn, loadUser }) => {
 
 
     const signInAPICall = () => {
-        fetch('http://localhost:3001/signin', {
+        fetch('https://gentle-mesa-91050.herokuapp.com/signin', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -27,7 +27,7 @@ export default ({ onRouteChange, signIn, loadUser }) => {
     }
 
     const registerAPICall = () => {
-        fetch('http://localhost:3001/register', {
+        fetch('https://gentle-mesa-91050.herokuapp.com/register', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
