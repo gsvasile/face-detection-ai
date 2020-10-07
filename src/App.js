@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -10,9 +9,6 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Form from './components/Form/Form';
 import './App.css';
 
-const app = new Clarifai.App({
-    apiKey: 'YOUR_API_KEY',
-});
 
 const particlesOptions = {
     particles: {
@@ -37,19 +33,30 @@ const particlesOptions = {
     },
 };
 
+const resetUser = {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+};
+
 export default () => {
     const [input, setInput] = React.useState('');
     const [imageUrl, setImageUrl] = React.useState('');
     const [box, setBox] = React.useState({});
     const [route, setRoute] = React.useState('signin');
     const [isSignedIn, setIsSignedIn] = React.useState(false);
-    const [user, setUser] = React.useState({
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-    });
+    const [user, setUser] = React.useState(resetUser);
+
+    const resetToInitialState = () => {
+        setInput('');
+        setImageUrl('');
+        setBox({});
+        setRoute('signin');
+        setIsSignedIn(false);
+        setUser(resetUser);
+    }
 
     const loadUser = (data) => {
         setUser({
@@ -81,11 +88,14 @@ export default () => {
     const onInputChange = (event) => setInput(event.target.value);
     const onButtonSubmit = () => {
         setImageUrl(input);
-        app.models
-            .predict(
-                Clarifai.FACE_DETECT_MODEL,
-                [input]
-            )
+        fetch('http://localhost:3001/imageurl', {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                input: input,
+            })
+        })
+            .then(response => response.json())
             .then(response => {
                 if (response) {
                     fetch('http://localhost:3001/image', {
@@ -99,7 +109,8 @@ export default () => {
                         .then(count => {
                             setUser(Object.assign(user, { entries: count }));
                             loadUser(user);
-                        });
+                        })
+                        .catch(console.log);
                 }
                 displayFaceBox(calculateFaceLoctaion(response))
             })
@@ -108,7 +119,7 @@ export default () => {
 
     const onRouteChange = (route) => {
         if (route === 'signout') {
-            setIsSignedIn(false);
+            resetToInitialState();
         } else if (route === 'home') {
             setIsSignedIn(true);
         }
