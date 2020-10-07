@@ -5,7 +5,7 @@ export default ({ inputImage, box }) => {
     return (
         <FaceRecognition>
             <ImageContainer>
-                <Image id='inputImage' alt="scanning" src={inputImage} width='500px' height='auto' />
+                <Image id='inputImage' alt='' src={inputImage} width='500px' height='auto' />
                 <FaceBox style={{ top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }}></FaceBox>
             </ImageContainer>
         </FaceRecognition>
